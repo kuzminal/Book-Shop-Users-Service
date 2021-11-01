@@ -1,0 +1,119 @@
+openapi: 3.0.3
+info:
+  title: Пользователи книжного магазина
+  description:
+    Это описание API для пользователей книжного магазина
+  contact:
+    name: Aleksey Kuzmin
+    email: support@packtpub.com
+  version: 1.0.0
+servers:
+  - url: https://users.swagger.io/v1
+tags:
+  - name: users
+    description: Операции с пользователями
+
+
+paths:
+  /api/v1/users:
+    get:
+      tags:
+        - users
+      summary: Возвращает все пользователей
+      description: Возвращает все пользователей или пустую коллекцию если ничего не найдено
+      operationId: getAllUsers
+      responses:
+        200:
+          description: Для успешного запроса.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags:
+        - users
+      summary: Добавить нового пользователя
+      description: Создает пользователя, если такой не существует. Если существует, то вернет существующего в ответ.
+      operationId: createUser
+      requestBody:
+        description: Информация о новом пользователе
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: Для успешного запроса.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /api/v1/users/{id}:
+    get:
+      tags:
+        - users
+      summary: Возвращает пользователя
+      description: Возвращает пользователя по идентификатору
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор пользователя
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Для успешного запроса.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      tags:
+        - users
+      summary: Удалить пользователя
+      description: Удалить пользователя по идентификатору
+      operationId: deleteUserById
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор пользователя
+          required: true
+          schema:
+            type: string
+      responses:
+        202:
+          description: Запро принят, вернется такой статус даже если пользователь несуществует
+          content: {}
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        phone:
+          type: string
+        userStatus:
+          description: Статус пользователя
+          type: string
+          enum:
+            - ACTIVE
+            - BLOCKED
