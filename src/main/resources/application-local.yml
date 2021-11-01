@@ -1,0 +1,12 @@
+spring:
+  r2dbc:
+    username: user
+    password: password
+    url: r2dbc:postgresql://localhost:5432/bookshop_users
+    properties:
+      schema: users
+  flyway:
+    user: ${spring.r2dbc.username}
+    password: ${spring.r2dbc.password}
+    url: jdbc:postgresql://localhost:5432/bookshop_users
+    schemas: users
